@@ -88,7 +88,7 @@ export class Laya {
 	/** 加载管理器的引用。*/
 	static loader: LoaderManager = null;
 	/** 当前引擎版本。*/
-	static version: string = "2.3.0beta";
+	static version: string = "2.4.0";
 	/**@private Render 类的引用。*/
 	static render: Render;
 	/**@internal */
@@ -324,9 +324,11 @@ export class Laya {
 		if (Laya.isNativeRender_enable)
 			return;
 		Laya.isNativeRender_enable = true;
-		Shader.prototype.uploadTexture2D = function (value: any): void {
-			var gl: WebGLRenderingContext = LayaGL.instance;
-			gl.bindTexture(gl.TEXTURE_2D, (<WebGLTexture>value));
+		if (Render.supportWebGLPlusRendering) {
+			Shader.prototype.uploadTexture2D = function (value: any): void {
+				var gl: WebGLRenderingContext = LayaGL.instance;
+				gl.bindTexture(gl.TEXTURE_2D, (<WebGLTexture>value));
+			}
 		}
 		RenderState2D.width = Browser.window.innerWidth;
 		RenderState2D.height = Browser.window.innerHeight;

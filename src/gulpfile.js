@@ -158,7 +158,7 @@ var packsDefPlatform = [
         'input': [
             './platform/ali/**/*.*'
         ],
-        'out': '../build/js/libs/laya.alimini.js'
+        'out': '../build/js/libs/laya.Alipaymini.js'
     },
     //debugtool
     {
@@ -257,6 +257,7 @@ gulp.task('ModifierJs', () => {
             .pipe(through.obj(function (file, encode, cb) {
                 var srcContents = file.contents.toString();
                 var destContents = srcContents.replace(/var Laya /, "window.Laya");
+                destContents = destContents.replace(/\(this.Laya = this.Laya \|\| {}, Laya\)\);/, "(window.Laya = window.Laya || {}, Laya));");
                 // 再次转为Buffer对象，并赋值给文件内容
                 file.contents = Buffer.from(destContents);
                 // 以下是例行公事
@@ -315,21 +316,21 @@ gulp.task('ConcatBox2dPhysics', function (cb) {
 //拷贝引擎的第三方js库
 gulp.task('CopyJSLibsToJS', () => {
     return gulp.src([
-        './layaAir/jsLibs/*.js', '!./layaAir/jsLibs/box2d.js', '!./layaAir/jsLibs/laya.physics.js'])
+        './layaAir/jsLibs/laya.physics3D.wasm.wasm', './layaAir/jsLibs/*.js', '!./layaAir/jsLibs/box2d.js', '!./layaAir/jsLibs/laya.physics.js'])
         .pipe(gulp.dest('../build/js/libs'));
 });
 
 //拷贝js库至ts库
 gulp.task('CopyJSFileToTSCompatible', () => {
     return gulp.src([
-        '../build/js/libs/**/*.js'])
+        './layaAir/jsLibs/laya.physics3D.wasm.wasm','../build/js/libs/**/*.js'])
         .pipe(gulp.dest('../build/ts/libs'));
 });
 
 //拷贝js库至as库
 gulp.task('CopyJSFileToAS', () => {
     return gulp.src([
-        '../build/js/libs/**/*.js', '!../build/js/declare/*ts'])
+        './layaAir/jsLibs/laya.physics3D.wasm.wasm','../build/js/libs/**/*.js', '!../build/js/declare/*ts'])
         .pipe(gulp.dest('../build/as/jslibs'));
 });
 
@@ -349,7 +350,7 @@ gulp.task('CopyTSJSLibsFileToTS', () => {
         '../build/js/libs/laya.xmmini.js',
         '../build/js/libs/laya.quickgamemini.js',
         '../build/js/libs/laya.vvmini.js',
-        '../build/js/libs/laya.alimini.js',
+        '../build/js/libs/laya.Alipaymini.js',
         '../build/js/libs/laya.qqmini.js'])
         .pipe(gulp.dest('../build/ts_new/jslibs'));
 });

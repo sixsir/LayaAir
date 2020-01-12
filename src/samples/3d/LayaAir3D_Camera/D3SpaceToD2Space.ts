@@ -65,9 +65,9 @@ export class D3SpaceToD2Space {
 		//变换的精灵的位置
 		this.layaMonkey3D.transform.position = this._position;
 		//矩阵变换得到对应的屏幕坐标
-		this.camera.viewport.project(this.layaMonkey3D.transform.position, this.camera.projectionViewMatrix, this._outPos);
-
-		this.layaMonkey2D.pos(this._outPos.x / Laya.stage.clientScaleX, this._outPos.y / Laya.stage.clientScaleY);
+		var outPos: Vector3 = this._outPos;
+		this.camera.viewport.project(this.layaMonkey3D.transform.position, this.camera.projectionViewMatrix, outPos);
+		this.layaMonkey2D.pos(outPos.x / Laya.stage.clientScaleX, outPos.y / Laya.stage.clientScaleY);
 	}
 
 }
